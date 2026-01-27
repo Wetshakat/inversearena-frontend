@@ -21,30 +21,61 @@ interface NotifyFunction {
 }
 
 export function useNotification() {
-  const { addNotification } = useNotificationContext();
+  const context = useNotificationContext();
+  
+  // Additional validation for context availability
+  if (!context) {
+    throw new Error(
+      'useNotification must be used within a NotificationProvider. ' +
+      'Make sure your component is wrapped with <NotificationProvider>.'
+    );
+  }
+  
+  const { addNotification } = context;
 
   const notify = useCallback((
     configOrMessage: NotificationConfig | string,
     options?: NotificationOptions
   ): string => {
+    // Validate message content
+    const message = typeof configOrMessage === 'string' 
+      ? configOrMessage 
+      : configOrMessage.message;
+      
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+      console.warn('useNotification: Empty or invalid message provided, skipping notification');
+      return '';
+    }
+
     if (typeof configOrMessage === 'string') {
       // Called with message string and options
       const config: NotificationConfig = {
-        message: configOrMessage,
+        message: configOrMessage.trim(),
         type: 'info',
         ...options,
       };
       return addNotification(config);
     } else {
       // Called with full config object
-      return addNotification(configOrMessage);
+      const config = {
+        ...configOrMessage,
+        message: configOrMessage.message.trim(),
+        type: configOrMessage.type || 'info',
+      };
+      return addNotification(config);
     }
   }, [addNotification]);
 
   const createTypeSpecificNotify = useCallback((type: NotificationType) => {
     return (message: string, options?: NotificationOptions): string => {
+      // Validate message for type-specific methods
+      if (!message || typeof message !== 'string' || message.trim().length === 0) {
+        console.warn(`useNotification.${type}: Empty or invalid message provided, skipping notification`);
+        return '';
+      }
+      
       const config: NotificationConfig = {
-        message,
+        message: message.trim(),
         type,
         ...options,
       };
