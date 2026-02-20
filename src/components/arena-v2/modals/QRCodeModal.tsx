@@ -43,7 +43,7 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({ isOpen, onClose, arenaUrl }) 
       ariaLabel="Scan to join arena"
       className="!rounded-none"
     >
-      {/* White container — sharp corners, no border-radius */}
+      {/* White container */}
       <div className="bg-white text-black w-full relative" style={{ borderRadius: 0 }}>
 
         {/* Close button — top-right, square */}
@@ -63,12 +63,8 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({ isOpen, onClose, arenaUrl }) 
           </h1>
         </div>
 
-        {/* QR Code — double border frame matching design exactly */}
-        <div className="flex items-center justify-center px-8 pb-6">
-          {/*
-            OUTER wrapper: only neon green L-shaped corners, no full border.
-            Padding creates the gap between corner marks and the inner black border.
-          */}
+        {/* QR Code */}
+        <div className="flex items-center justify-center px-3 pb-3">
           <div className="relative p-3">
             {/* Neon green corner — top-left */}
             <span
@@ -91,10 +87,10 @@ const QRCodeModal: React.FC<QRCodeModalProps> = ({ isOpen, onClose, arenaUrl }) 
               style={{ width: 28, height: 28 }}
             />
 
-            {/* MIDDLE layer: thin light/grey border — sits just inside the green corners */}
-            <div className="border border-gray-400 p-2" style={{ borderRadius: 0 }}>
+            {/* MIDDLE layer */}
+            <div className="border-[3px] border-neutral-800 p-3" style={{ borderRadius: 0 }}>
 
-              {/* INNER layer: thick dark black border — the darker second frame */}
+              {/* INNER layer */}
               <div className="border-[6px] border-neutral-800 bg-white p-1" style={{ borderRadius: 0 }}>
                 <QRCodeSVG
                   value={fullUrl}
