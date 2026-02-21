@@ -163,3 +163,27 @@ Optional API override used by telemetry module:
 ```bash
 NEXT_PUBLIC_COINGECKO_SIMPLE_PRICE_URL=https://api.coingecko.com/api/v3/simple/price?ids=cardano&vs_currencies=usd
 ```
+
+## API Rate Limiting
+
+Sensitive write endpoints are protected with a Redis-backed limiter (`rate-limiter-flexible` + `ioredis`) with keys scoped by IP and optional wallet address.
+
+Protected endpoints:
+
+- `POST /auth/nonce`
+- `POST /pools`
+
+On limit violation, APIs return:
+
+- HTTP `429`
+- `Retry-After` response header (seconds)
+
+Configurable environment variables:
+
+- `REDIS_URL` (required for multi-instance shared limits)
+- `RATE_LIMIT_NONCE_PREFIX` (default: `rl:auth:nonce`)
+- `RATE_LIMIT_NONCE_POINTS` (default: `5`)
+- `RATE_LIMIT_NONCE_WINDOW_SECONDS` (default: `60`)
+- `RATE_LIMIT_POOLS_PREFIX` (default: `rl:pools:create`)
+- `RATE_LIMIT_POOLS_POINTS` (default: `3`)
+- `RATE_LIMIT_POOLS_WINDOW_SECONDS` (default: `60`)
