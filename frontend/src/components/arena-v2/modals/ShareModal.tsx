@@ -80,7 +80,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      size="md"
+      size="lg"
       position="center"
       closeOnOverlayClick
       closeOnEscape
@@ -133,7 +133,7 @@ const ShareModal: React.FC<ShareModalProps> = ({
                 </div>
                 <button
                   onClick={handleCopyLink}
-                  className="bg-[#39FF14] hover:bg-[#2de010] active:scale-95 transition-all px-6 font-black text-black text-xs tracking-widest uppercase flex items-center gap-2"
+                  className="bg-[#39FF14] hover:bg-[#2de010] active:scale-95 transition-all px-8 py-4 font-black text-black text-xs tracking-widest uppercase flex items-center gap-2"
                   style={{ borderRadius: 0 }}
                 >
                   <svg
