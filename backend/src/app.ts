@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { createApiRouter } from "./routes";
 import { createAdminRouter } from "./routes/admin";
 import { errorHandler } from "./middleware/errorHandler";
+import { requestLogger } from "./middleware/logger";
 import { ApiKeyAuthProvider, requireAdmin, requireAuth } from "./middleware/auth";
 import { PayoutsController } from "./controllers/payouts.controller";
 import { WorkerController } from "./controllers/worker.controller";
@@ -29,6 +30,7 @@ export function createApp(deps: AppDependencies): express.Application {
   app.use(helmet());
   app.use(cors());
   app.use(express.json());
+  app.use(requestLogger);
 
   app.get("/health", (_req, res) => {
     res.json({ status: "ok" });

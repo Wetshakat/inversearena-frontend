@@ -11,9 +11,12 @@ import { AdminService } from "./services/adminService";
 import { AuthService } from "./services/authService";
 import { createApp } from "./app";
 
+import { initSentry } from "./utils/sentry";
+
 const PORT = Number(process.env.PORT ?? 3001);
 
 async function main() {
+  initSentry();
   await connectDB();
   await redis.connect();
 
