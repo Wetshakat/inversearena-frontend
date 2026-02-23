@@ -70,6 +70,34 @@ body {
   font-family: var(--font-pixel), monospace;
 }
 
+.pool-success-modal-scrollbar {
+  scrollbar-width: thin;
+  /* Firefox */
+  scrollbar-color: #00FF00 #131810;
+  /* thumb and track color */
+}
+
+.pool-success-modal-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  /* Slim width */
+}
+
+.pool-success-modal-scrollbar::-webkit-scrollbar-track {
+  background: #131810;
+  /* Dark track to match background */
+}
+
+.pool-success-modal-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #00FF00;
+  /* Green thumb */
+  border-radius: 0;
+  /* Sharp edges to match the design */
+  border: none;
+}
+
+.pool-success-modal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #00DD00;
+  /* Slightly lighter on hover */
 /* ── Neubrutalist utilities (Waiting Room) ── */
 .neubrutalist-border {
   border: 3px solid #000000;
