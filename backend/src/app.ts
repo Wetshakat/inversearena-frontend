@@ -11,6 +11,7 @@ import { PayoutsController } from "./controllers/payouts.controller";
 import { WorkerController } from "./controllers/worker.controller";
 import { AdminController } from "./controllers/admin.controller";
 import { AuthController } from "./controllers/auth.controller";
+import { TransactionsController } from "./controllers/transactions.controller";
 import { RoundController } from "./controllers/round.controller";
 import { register } from "./utils/metrics";
 import type { PaymentService } from "./services/paymentService";
@@ -55,12 +56,13 @@ export function createApp(deps: AppDependencies): express.Application {
     deps.transactions
   );
   const authController = new AuthController(deps.authService);
+  const transactionsController = new TransactionsController(deps.transactions);
   const roundController = new RoundController(deps.roundService);
 
   const adminAuthMiddleware = requireAdmin(new ApiKeyAuthProvider());
   const userAuthMiddleware = requireAuth(deps.authService);
 
-  app.use("/api", createApiRouter(payoutsController, workerController, authController, userAuthMiddleware));
+  app.use("/api", createApiRouter(payoutsController, workerController, authController, transactionsController, userAuthMiddleware));
   app.use("/api/admin", createAdminRouter(adminController, roundController, adminAuthMiddleware));
 
   app.use(errorHandler);
