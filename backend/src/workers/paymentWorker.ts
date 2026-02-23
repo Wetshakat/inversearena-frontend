@@ -1,6 +1,8 @@
+import type { Queue } from "bullmq";
 import type { PaymentStatus } from "../types/payment";
 import { PaymentService } from "../services/paymentService";
 import type { TransactionRepository } from "../repositories/transactionRepository";
+import type { ConfirmJobData } from "../queues/txQueue";
 import { workerJobsPending, txsConfirmedTotal } from "../utils/metrics";
 
 export interface PaymentWorkerResult {
@@ -13,7 +15,8 @@ export interface PaymentWorkerResult {
 export class PaymentWorker {
   constructor(
     private readonly transactions: TransactionRepository,
-    private readonly paymentService: PaymentService
+    private readonly paymentService: PaymentService,
+    private readonly txQueue?: Queue<ConfirmJobData>
   ) {}
 
   async processBatch(limit = 25): Promise<PaymentWorkerResult> {
@@ -31,11 +34,21 @@ export class PaymentWorker {
         const result = await this.paymentService.submitQueuedTransaction(transaction.id);
         if (result.submitted) {
           submitted += 1;
+          // Hand off confirmation polling to BullMQ for persistent retry with backoff
+          if (this.txQueue) {
+            await this.txQueue.add("confirm", { transactionId: transaction.id });
+          }
         }
         if (result.transaction.status === "failed") {
           failed += 1;
           txsConfirmedTotal.inc({ status: 'failed' });
         }
+        continue;
+      }
+
+      // "submitted" status: only do inline confirmation if no BullMQ queue is configured
+      // (fallback for test / no-Redis environments)
+      if (this.txQueue) {
         continue;
       }
 
