@@ -189,8 +189,7 @@ export function YieldPerformanceChart({ data = defaultData }: YieldPerformanceCh
               stroke={LINE_STROKE}
               strokeWidth={2.5}
               fill="none"
-              dot={(props: AreaProps["dot"]) => renderDot(props as Parameters<typeof renderDot>[0], data)}
-              activeDot={{
+              dot={(props: any) => renderDot(props, data)} activeDot={{
                 r: 5,
                 fill: NEON_GREEN,
                 stroke: "rgba(255,255,255,0.3)",
