@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --color-neon-green: #37FF1C;
+  --color-neon-pink: #FF0055;
+  --color-dark-bg: #09101D;
+  --color-card-bg: #0D1117;
+  --color-border-gray: #1E232B;
+}
+
+:root {
+  --background: #09101D;
+  --foreground: #FFFFFF;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: #37FF1C;
+  color: #000000;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui;
+
+  /* Grid with thin neon-green lines - slightly adjusted for better visibility */
+  background-image:
+    linear-gradient(rgba(55, 255, 28, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(55, 255, 28, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-attachment: fixed;
+}
+
+/* Custom class for the thin branding font */
+.font-extralight {
+  font-weight: 200;
+}
